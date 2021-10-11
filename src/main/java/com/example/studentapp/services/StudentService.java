@@ -1,5 +1,6 @@
 package com.example.studentapp.services;
 
+import com.example.studentapp.dto.StudentDTO;
 import com.example.studentapp.entity.StudentEntity;
 import com.example.studentapp.repository.StudentRepository;
 
@@ -20,12 +21,24 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public StudentEntity addStudent(StudentEntity student) {
+    public StudentEntity addStudent(StudentDTO studentDTO) {
+        StudentEntity student = new StudentEntity();
+        student.setFname(studentDTO.getFname());
+        student.setLname(studentDTO.getLname());
+        student.setRollNo(studentDTO.getRollNo());
         return studentRepository.save(student);
     }
 
-    public StudentEntity updateStudent(StudentEntity student) {
-        return studentRepository.save(student);
+    public StudentEntity updateStudent(int id,StudentDTO studentDTO) {
+        Optional<StudentEntity> optionalStudentEntity = studentRepository.findById(id);
+        if(optionalStudentEntity.isPresent()) {
+            StudentEntity studentEntity = optionalStudentEntity.get();
+            studentEntity.setFname(studentDTO.getFname());
+            studentEntity.setLname(studentDTO.getLname());
+            studentEntity.setRollNo(studentDTO.getRollNo());
+            return studentRepository.save(studentEntity);
+        }
+        return this.addStudent(studentDTO);
     }
 
     public String deleteStudent(int id) {

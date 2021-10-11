@@ -1,5 +1,6 @@
 package com.example.studentapp.controller;
 
+import com.example.studentapp.dto.StudentDTO;
 import com.example.studentapp.entity.StudentEntity;
 import com.example.studentapp.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,8 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
-//    private StudentRepository studentRepository;
+
+    private StudentDTO studentDTO;
 
     @GetMapping(value = "/students/display-list")
     public List<StudentEntity> students() {
@@ -24,12 +26,12 @@ public class StudentController {
 
     @PostMapping(value = "/students/add-student")
     public StudentEntity addStudent(@RequestBody StudentEntity student) {
-        return studentService.addStudent(student);
+        return studentService.addStudent(studentDTO);
     }
 
     @PutMapping(value = "/students/update-student")
-    public StudentEntity updateStudent(@RequestBody StudentEntity student) {
-        return studentService.updateStudent(student);
+    public StudentEntity updateStudent(@PathVariable int id, @RequestBody StudentEntity student) {
+        return studentService.updateStudent(id,studentDTO);
     }
 
     @DeleteMapping(value = "/students/delete-student")
